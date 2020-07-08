@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <style>
+        .disabledButton{
+            background-color: grey;
+            color: red;
+        }
+        img{height:300px;
+        width:300px;}
+    </style>
+</head>
+
+<body>
+
+    <div class="nav-bar p-4 bg-success"></div>
+
+
+    <div id="app">
+     <item></item>
+     
+     
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script>
+        Vue.component('item', {
+            template: `<div class="container  flex-row flex-wrap justify-content-around  d-flex">
+            <div class="item-image pt-3 ">
+                <img v-bind:src="image" >
+            </div>
+
+            <div class="item-info">
+                <h1>COZY {{item}} </h1>
+                <a :href="link">JUMIA STORES</a>
+                <p v-if="inStock" >In Stock</p>
+                <p v-else="inStock" :style="styleObject">Out of Stock</p>
+                <p v-if="onSale >=50">On Sale!!!</p>
+                <p v-else-if="onSale >= 1">Limited Stock</p>
+                <p v-else="onSale = 0">Sold Out!!!</p>
+                
+                <div>
+                    <ul>
+                        <li v-for="list in lists">{{list}} </li>
+                    </ul>
+                </div>
+                <div>
+                    <ul>
+                        <li v-for="size in sizes">{{size}} </li>
+                    </ul>
+                </div>
+                <div v-for="variant in variants" :key="variant.variantId" class="p-3 m-2 w-50 text-light"
+                    :style="{backgroundColor:variant.variantColor}">
+                    <p @mouseover="updateProduct (variant.variantImage )">{{variant.variantColor}}</p>
+                </div>
+                <button class="btn btn-success" v-on:click=" addToCart" :disabled="!inStock" >Add to Cart</button>
+                <button class="btn btn-danger" v-on:click="cart -=1 && cart >=1">reduce Cart</button>
+                <div class="cart">
+                    <p>Cart({{cart}})</p>
+                </div>
+
+                
+            </div>
+
+        </div>`,
+       
+        data ( ){return {
+                item: 'SOCKS',
+                image: 'socks.jpg',
+                link: 'https://jumia.com',
+                inStock: true,
+                onSale: 10,
+                lists: ["80% Cotton", "20% Polyester", "5% silk"],
+                sizes: ["Small Sm", "Medium M", "Large L", "Extra-large XL"],
+                variants: [
+                    {
+                        variantId: 10,
+                        variantColor: "Green",
+                        variantImage: 'greensocks.jpg'
+                    },
+                    {
+                        variantId: 20,
+                        variantColor: "Blue",
+                        variantImage: 'bluesocks.jpg'
+                    }
+                ],
+
+                cart: 0,
+               
+                color: "red",
+                styleObject: {
+                textDecoration: "line-through"
+                },
+            
+                active:true,
+                err: false,  
+                classObject: {
+                    btn: true,
+                    'btn-danger':true,
+                    'text-danger':true,
+
+                }  
+                
+
+            }   
+
+        },
+        methods: {
+                    addToCart: function () {
+                        this.cart += 1
+                    },
+                    updateProduct: function (variantImage) {
+                        this.image = variantImage
+                    }
+                }, })
+
+        
+        var app = new Vue({
+            el: '#app',
+           
+            
+        })
+
+
+
+    </script>
+
+</body>
+
+</html>
